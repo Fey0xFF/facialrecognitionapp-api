@@ -35,14 +35,14 @@ app.get('/', (req, res) => {
 })
 
 app.post('/signin', (req, res) => {
-	bcrypt.compare("apples", "$2a$10$hx3Nx6nH7HtjroN3aDa.8OarxFiBKHH0K6aPGt.ee8NnlG0/J2twa", function(err, res) {
-    	console.log('first guess', res);
-	});
-	bcrypt.compare("veggies", "$2a$10$hx3Nx6nH7HtjroN3aDa.8OarxFiBKHH0K6aPGt.ee8NnlG0/J2twa", function(err, res) {
-	    console.log('second guess', res);
-	});
+	// bcrypt.compare("apples", "$2a$10$hx3Nx6nH7HtjroN3aDa.8OarxFiBKHH0K6aPGt.ee8NnlG0/J2twa", function(err, res) {
+ //    	console.log('first guess', res);
+	// });
+	// bcrypt.compare("veggies", "$2a$10$hx3Nx6nH7HtjroN3aDa.8OarxFiBKHH0K6aPGt.ee8NnlG0/J2twa", function(err, res) {
+	//     console.log('second guess', res);
+	// });
 	if (req.body.email === database.users[0].email && req.body.password === database.users[0].password) {
-		res.json('success');
+		res.json(database.users[0]);
 	} else {
 		res.status(400).json('error logging in');
 	}
