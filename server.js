@@ -1,11 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt-nodejs');
+const cors = require('cors');
 
 
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors());
 
 const database = {
 	users: [
@@ -33,10 +35,10 @@ app.get('/', (req, res) => {
 })
 
 app.post('/signin', (req, res) => {
-	bcrypt.compare("$2a$10$AeQv4yLhoPDRCwahpkqipOoqvUXSyngKExrmx3OiwLyCOkrqg4EHi", hash, function(err, res) {
+	bcrypt.compare("apples", "$2a$10$hx3Nx6nH7HtjroN3aDa.8OarxFiBKHH0K6aPGt.ee8NnlG0/J2twa", function(err, res) {
     	console.log('first guess', res);
 	});
-	bcrypt.compare("veggies", hash, function(err, res) {
+	bcrypt.compare("veggies", "$2a$10$hx3Nx6nH7HtjroN3aDa.8OarxFiBKHH0K6aPGt.ee8NnlG0/J2twa", function(err, res) {
 	    console.log('second guess', res);
 	});
 	if (req.body.email === database.users[0].email && req.body.password === database.users[0].password) {
@@ -74,7 +76,7 @@ app.get('/profile/:id', (req, res) => {
 		} 
 	})
 	if (!found) {
-		res.status(404).json('Error request');
+		res.status(400).json('Error request');
 	}
 })
 
