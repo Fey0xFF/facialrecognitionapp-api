@@ -3,18 +3,20 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
 
-const postgres = require('knex')({
+const db = require('knex')({
 	client: 'pg',
 	connection: {
 	  host : '127.0.0.1',
 	  user : 'anthony',
 	  password : '',
-	  database : 'facialreq'
+	  database : 'facialrec'
 	}
   });
 
 
-console.log(postgres.select('*').from('users'));
+db.select('*').from('users').then(data => {
+	console.log('users', data);
+});
 
 const app = express();
 
@@ -66,6 +68,12 @@ app.post('/register', (req, res) => {
 	bcrypt.hash(password, null, null, function(err, hash) {
     	console.log(hash);
 	});
+
+	db('users').insert({
+		email: email,
+		name: name,
+		joined: new Date()
+	}).then(console.log)
 
 	database.users.push({
 		id:'125',
