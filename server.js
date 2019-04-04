@@ -71,42 +71,41 @@ app.post('/register', (req, res) => {
 	// });
 
 	db('users')
+		.returning('*')
 		.insert({
 			email: email,
 			name: name,
 			joined: new Date()
 		})
-		.then(console.log)
-		res.json(database.users[database.users.length-1]);
+		.then(user => {
+			res.json(user[0]);
+		})
+		.catch(err => res.status(400).json('unable to register'))
 })
 
 app.get('/profile/:id', (req, res) => {
 	const { id } = req.params;
-	let found = false;
-	database.users.forEach(user => {
-		if (user.id === id) {
-			res.json(user);
-			found = true;
-		} 
+	db.select('*').from('users').where({id})
+		.then(user => {
+		if(user.length) {
+			res.json(user[0])	
+		} else {
+			res.status(400).json('Not found')
+		}
+		
 	})
-	if (!found) {
-		res.status(400).json('Error request');
-	}
+	.catch(err => res.status(400).json('Not found'))
 })
 
 app.put('/image', (req, res) => {
 	const { id } = req.body;
-	let found = false;
-	database.users.forEach(user => {
-		if (user.id === id) {
-			user.entries++;
-			res.json(user.entries);
-			found = true;
-		} 
+	db('users').where('id', '=', id)
+	.increment('entries', 1)
+	.returning('entries')
+	.then(entries => {
+		res.json(entries[0]);
 	})
-	if (!found) {
-		res.status(404).json('Error request');
-	}		
+	.catch(err => res.status(400).json('unable to get entries!'))
 })
 
 
