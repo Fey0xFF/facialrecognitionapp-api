@@ -33,6 +33,7 @@ app.get('/', (req, res) => { res.send(database.users) })
 app.post('/signin', signin.handleSignIn(db, bcrypt) );
 app.post('/register', register.handleRegister(db, bcrypt) );
 app.put('/image', image.handleImage(db) );
+app.post('/imageurl', (req, res) => {image.handleAPICall(req, res)});
 app.get('/profile/:id', profile.handleProfileGet(db) );
 
 app.listen(3000, () => {
