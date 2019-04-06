@@ -11,10 +11,8 @@ const profile = require('./controllers/profile');
 const db = knex({
 	client: 'pg',
 	connection: {
-	  host : '127.0.0.1',
-	  user : 'anthony',
-	  password : '',
-	  database : 'facialrec'
+	  connectionString : process.env.DATABASE_URL,
+	  ssl: true
 	}
 });
 
